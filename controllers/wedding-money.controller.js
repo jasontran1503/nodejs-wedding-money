@@ -48,21 +48,17 @@ const updateWeddingMoney = async (req, res, next) => {
     const weddingMoney = await WeddingMoney.findById(req.query.id);
     if (!weddingMoney) {
       throw new Error('Dữ liệu không tồn tại');
-    } else {
-      if (!weddingMoney.user.equals(user._id)) {
-        throw new Error('Có lỗi xảy ra. Vui lòng thử lại');
-      }
-      const updated = await WeddingMoney.findByIdAndUpdate(req.query.id, req.body, {
-        new: true,
-        runValidators: true
-      });
-
-      return res.status(200).json({
-        success: true,
-        message: 'Cập nhật thành công',
-        data: updated
-      });
     }
+    const updated = await WeddingMoney.findByIdAndUpdate(req.query.id, req.body, {
+      new: true,
+      runValidators: true
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: 'Cập nhật thành công',
+      data: updated
+    });
   } catch (error) {
     next(error);
   }
@@ -79,16 +75,13 @@ const getWeddingMoneyById = async (req, res, next) => {
 
     if (!data) {
       throw new Error('Dữ liệu không tồn tại');
-    } else {
-      if (!data.user.equals(req.user._id)) {
-        throw new Error('Có lỗi xảy ra. Vui lòng thử lại');
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Thành công',
-        data
-      });
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Thành công',
+      data
+    });
   } catch (error) {
     next(error);
   }
@@ -104,16 +97,13 @@ const deleteWeddingMoneyById = async (req, res, next) => {
 
     if (!data) {
       throw new Error('Dữ liệu không tồn tại');
-    } else {
-      if (!data.user.equals(req.user._id)) {
-        throw new Error('Có lỗi xảy ra. Vui lòng thử lại');
-      }
-      return res.status(200).json({
-        success: true,
-        message: 'Xóa thành công',
-        data
-      });
     }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Xóa thành công',
+      data
+    });
   } catch (error) {
     next(error);
   }
@@ -138,13 +128,10 @@ const searchWeddingMoney = async (req, res, next) => {
   }
 
   try {
-    const result = await WeddingMoney.find(searchCondition).lean();
-    let data = [];
+    const data = await WeddingMoney.find(searchCondition);
 
-    if (!result) {
+    if (!data) {
       throw new Error('Không tìm thấy dữ liệu');
-    } else {
-      data = result.filter((item) => item.user.equals(req.user._id));
     }
 
     return res.status(200).json({
