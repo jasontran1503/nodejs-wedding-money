@@ -45,19 +45,22 @@ const updateWeddingMoney = async (req, res, next) => {
       throw new Error('Không tìm thấy user');
     }
 
-    const weddingMoney = await WeddingMoney.findById(req.query.id);
-    if (!weddingMoney) {
+    const data = await WeddingMoney.findOneAndUpdate(
+      { user: req.user._id, _id: req.query.id },
+      req.body,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+    if (!data) {
       throw new Error('Dữ liệu không tồn tại');
     }
-    const updated = await WeddingMoney.findByIdAndUpdate(req.query.id, req.body, {
-      new: true,
-      runValidators: true
-    });
 
     return res.status(200).json({
       success: true,
       message: 'Cập nhật thành công',
-      data: updated
+      data
     });
   } catch (error) {
     next(error);
@@ -71,7 +74,10 @@ const updateWeddingMoney = async (req, res, next) => {
  */
 const getWeddingMoneyById = async (req, res, next) => {
   try {
-    const data = await WeddingMoney.findById(req.query.id).populate('user', 'username email');
+    const data = await WeddingMoney.findOne({ user: req.user._id, _id: req.query.id }).populate(
+      'user',
+      'username email'
+    );
 
     if (!data) {
       throw new Error('Dữ liệu không tồn tại');
@@ -93,7 +99,7 @@ const getWeddingMoneyById = async (req, res, next) => {
  */
 const deleteWeddingMoneyById = async (req, res, next) => {
   try {
-    const data = await WeddingMoney.findByIdAndDelete(req.params.id);
+    const data = await WeddingMoney.findOneAndDelete({ user: req.user._id, _id: req.params.id });
 
     if (!data) {
       throw new Error('Dữ liệu không tồn tại');
@@ -117,6 +123,7 @@ const deleteWeddingMoneyById = async (req, res, next) => {
 const searchWeddingMoney = async (req, res, next) => {
   const { name, phoneNumber } = req.query;
   const searchCondition = {
+    user: req.user._id,
     name: { $regex: String(name), $options: 'i' },
     phoneNumber: { $regex: String(phoneNumber), $options: 'i' }
   };
