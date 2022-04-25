@@ -16,7 +16,7 @@ const createWeddingMoney = async (req, res, next) => {
       throw new Error('Không tìm thấy user');
     }
 
-    const found = await WeddingMoney.findOne({ name });
+    const found = await WeddingMoney.findOne({ user: req.user._id, name });
     if (found) {
       throw new Error('Tên vừa nhập đã tồn tại');
     }

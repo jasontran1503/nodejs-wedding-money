@@ -5,7 +5,6 @@ const WeddingMoneySchema = new mongoose.Schema(
     name: {
       type: String,
       lowercase: true,
-      unique: true,
       required: true
     },
     money: {
