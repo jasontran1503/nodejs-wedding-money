@@ -22,11 +22,11 @@ module.exports = {
       .isEmail()
       .withMessage('Email không đúng định dạng')
       .normalizeEmail(),
-    fieldsRequired('username', 'Username')
+    fieldsRequired('username', 'Tên')
       .matches(/^[a-zA-Z0-9]*$/)
-      .withMessage('Username không đúng định dạng')
+      .withMessage('Tên không đúng định dạng')
       .isLength({ min: 4, max: 20 })
-      .withMessage('Username từ 4 đến 20 kí tự'),
+      .withMessage('Tên từ 4 đến 20 kí tự'),
     fieldsRequired('password', 'Mật khẩu')
       .isLength({ min: 4, max: 20 })
       .withMessage('Mật khẩu từ 4 đến 20 kí tự'),
@@ -44,8 +44,8 @@ module.exports = {
       .withMessage('Email không đúng định dạng')
       .normalizeEmail(),
     fieldsRequired('password', 'Mật khẩu')
-      .isLength({ min: 6, max: 20 })
-      .withMessage('Mật khẩu từ 6 đến 20 kí tự')
+      .isLength({ min: 4, max: 20 })
+      .withMessage('Mật khẩu từ 4 đến 20 kí tự')
   ],
 
   createWeddingMoney: [
@@ -55,5 +55,25 @@ module.exports = {
 
   updateWeddingMoney: [
     fieldsRequired('money', 'Số tiền').isInt({ min: 1 }).withMessage('Số tiền phải lớn hơn 0')
+  ],
+
+  updateProfile: [
+    fieldsRequired('username', 'Tên')
+      .matches(/^[a-zA-Z0-9]*$/)
+      .withMessage('Tên không đúng định dạng')
+      .isLength({ min: 4, max: 20 })
+      .withMessage('Tên từ 4 đến 20 kí tự'),
+    fieldsRequired('oldPassword', 'Mật khẩu cũ')
+      .isLength({ min: 4, max: 20 })
+      .withMessage('Mật khẩu từ 4 đến 20 kí tự'),
+    fieldsRequired('newPassword', 'Mật khẩu mới')
+      .isLength({ min: 4, max: 20 })
+      .withMessage('Mật khẩu từ 4 đến 20 kí tự'),
+    body('confirmNewPassword').custom((value, { req }) => {
+      if (value !== req.body.newPassword) {
+        throw new Error('Mật khẩu nhập không trùng khớp');
+      }
+      return true;
+    })
   ]
 };

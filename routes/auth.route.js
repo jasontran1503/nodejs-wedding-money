@@ -14,5 +14,12 @@ router.post('/login', validation.login, validation.handleValidationErrors, authC
 router.post('/logout', auth.guard, authController.logout);
 router.get('/user', auth.guard, authController.getCurrentUser);
 router.get('/is-auth', authController.isAuthenticated);
+router.put(
+  '/update-profile',
+  auth.guard,
+  validation.updateProfile,
+  validation.handleValidationErrors,
+  authController.updateProfile
+);
 
 module.exports = router;

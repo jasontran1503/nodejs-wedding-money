@@ -118,10 +118,44 @@ const isAuthenticated = async (req, res, next) => {
   }
 };
 
+/**
+ * Update profile
+ * @route PUT api/auth/update-profile
+ * @body username, password, newPassword, confirmNewPassword
+ */
+const updateProfile = async (req, res, next) => {
+  const user = req.user;
+  const { username, oldPassword, newPassword } = req.body;
+
+  try {
+    if (!user) {
+      throw new Error('Không tìm thấy user');
+    }
+
+    const isMatch = await user.matchPassword(oldPassword);
+    if (!isMatch) {
+      throw new Error('Mật khẩu hiện tại không đúng.');
+    }
+
+    user.username = username;
+    user.password = newPassword;
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: 'Cập nhật thành công.',
+      data: user
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   login,
   logout,
   register,
   getCurrentUser,
-  isAuthenticated
+  isAuthenticated,
+  updateProfile
 };
