@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'https://626a58a34c26280cf9b6785c--verdant-mandazi-17234a.netlify.app',
+    origin: 'https://verdant-mandazi-17234a.netlify.app',
     allowedHeaders: 'Origin, X-Requested-With, X-Api-Key, Content-Type, Accept, Authorization',
     methods: 'GET, POST, PUT, DELETE',
     credentials: true
