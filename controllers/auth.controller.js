@@ -90,6 +90,7 @@ const getCurrentUser = async (req, res, next) => {
 
   try {
     if (!user) {
+      res.clearCookie('token');
       throw new Error('Không tìm thấy user');
     }
     return res.status(200).json({
