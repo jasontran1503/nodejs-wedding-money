@@ -1,6 +1,13 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user.model');
 
+const options = {
+  expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
+  httpOnly: false,
+  secure: true,
+  sameSite: 'none'
+};
+
 /**
  * Register
  * @route POST api/auth/register
@@ -48,13 +55,6 @@ const login = async (req, res, next) => {
         expiresIn: process.env.JWT_EXPIRE
       });
 
-      const options = {
-        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
-        httpOnly: false,
-        secure: true,
-        sameSite: 'none'
-      };
-
       return res.status(200).cookie('token', token, options).json({
         success: true,
         message: 'Đăng nhập thành công',
@@ -73,7 +73,7 @@ const login = async (req, res, next) => {
  * @route POST api/auth/logout
  */
 const logout = async (req, res, next) => {
-  res.clearCookie('token');
+  res.clearCookie('token', options);
 
   return res.status(200).json({
     success: true,
