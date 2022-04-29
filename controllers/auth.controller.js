@@ -53,7 +53,7 @@ const login = async (req, res, next) => {
         httpOnly: false,
         secure: true,
         sameSite: 'none',
-        domain: 'verdant-mandazi-17234a'
+        domain: 'verdant-mandazi-17234a.netlify.app'
       };
 
       return res.status(200).cookie('token', token, options).json({
