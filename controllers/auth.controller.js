@@ -52,8 +52,7 @@ const login = async (req, res, next) => {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000),
         httpOnly: false,
         secure: true,
-        sameSite: 'none',
-        domain: 'verdant-mandazi-17234a.netlify.app'
+        sameSite: 'none'
       };
 
       return res.status(200).cookie('token', token, options).json({
