@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: 'https://verdant-mandazi-17234a.netlify.app',
+    origin: 'https://weddingmoney.netlify.app',
     allowedHeaders: 'Origin, X-Requested-With, X-Api-Key, Content-Type, Accept, Authorization',
     methods: 'GET, POST, PUT, DELETE',
     credentials: true
